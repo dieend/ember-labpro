@@ -33,7 +33,13 @@ public class MainActivity extends Activity implements OnTouchListener{
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		// TODO Auto-generated method stub
-		GL
-		return false;
+		if (v == cv) {
+			if ((MotionEvent.ACTION_MOVE & event.getActionMasked()) > 0) {
+				// move sprite
+			} else if ((MotionEvent.ACTION_DOWN & event.getActionMasked()) > 0) {
+				// cek intersect dengan sprite
+			}
+		}
+		return true;
 	}
 }

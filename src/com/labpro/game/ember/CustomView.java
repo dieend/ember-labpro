@@ -16,6 +16,6 @@ public class CustomView extends View{
 	}
 	@Override
 	public void onDraw(Canvas c) {
-		
+		// sprite.draw(c);
 	}
 }
