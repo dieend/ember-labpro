@@ -9,6 +9,8 @@
     tools:context=".MainActivity" >
 
     <com.labpro.game.ember.CustomView
-        android:id="@+id/custom_view" />
+        android:id="@+id/custom_view"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
 
 </RelativeLayout>
