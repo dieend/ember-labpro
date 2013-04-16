@@ -1,33 +1,33 @@
 package com.labpro.game.ember;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.BitmapFactory.Options;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
-import android.graphics.Paint;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+@SuppressLint("ViewConstructor")
 public class MainGameView extends SurfaceView implements SurfaceHolder.Callback {
 
 	private static final String TAG = MainGameView.class.getSimpleName();
 	public GameLoopThread thread;
 	private Matrix matrix = new Matrix();	
 	private Bitmap background; // gambar latar belakang
-	Paint paint = new Paint();
-	Options options = new BitmapFactory.Options();
+	private Bucket bucket;	
 	
 	public MainGameView(Object context, int screenWidth, int screenHeight) {
 		super((Context) context);
 		getHolder().addCallback(this);
 		setFocusable(true);
 		
-		loadResources();
+		bucket = new Bucket(this, screenWidth, screenHeight);		
+		background = BitmapFactory.decodeResource(getResources(),R.drawable.background);
 	}
 	
 	@Override
@@ -45,10 +45,6 @@ public class MainGameView extends SurfaceView implements SurfaceHolder.Callback 
 	public void surfaceDestroyed(SurfaceHolder arg0) {		
 		releaseThread();
 		Log.d(TAG, "surface destroyed");
-	}
-	
-	private void loadResources() {
-		background = BitmapFactory.decodeResource(getResources(),R.drawable.background, options);
 	}
 	
 	// inisialisasi thread
@@ -74,14 +70,13 @@ public class MainGameView extends SurfaceView implements SurfaceHolder.Callback 
 		}
 	}
 
-	public void render(Canvas canvas) {		
-		Log.d(TAG, "render");
+	public void render(Canvas canvas) {				
 		canvas.setMatrix(matrix);
 		drawBackground(canvas);
+		bucket.draw(canvas);		
 	}
 
-	public void update() {
-		Log.d(TAG, "update");
+	public void update() {		
 	}
 	
 	public boolean onTouchEvent(MotionEvent event) {
@@ -89,21 +84,23 @@ public class MainGameView extends SurfaceView implements SurfaceHolder.Callback 
 		switch (actioncode) {
 			case MotionEvent.ACTION_DOWN:
 				Log.d(TAG, "down at " + event.getX() + " " + event.getY());
+				bucket.x = (int)event.getX();
 				break;
 			case MotionEvent.ACTION_MOVE:
 				Log.d(TAG, "move at " + event.getX() + " " + event.getY());
+				bucket.x = (int)event.getX();
 				break;
 			case MotionEvent.ACTION_UP:
 				Log.d(TAG, "up at " + event.getX() + " " + event.getY());
+				bucket.x = (int)event.getX();
 				break;		
 		}				
 		return true;
 	}	
 	
 	private void drawBackground(Canvas canvas) {
-		canvas.drawColor(Color.BLACK);// clear screen
-		paint.setFilterBitmap(true);
-		paint.setDither(true);
-		canvas.drawBitmap(background, 0, 0, paint);		
+		canvas.drawColor(Color.BLACK);// clear screen		
+		canvas.drawBitmap(background, 0, 0, null);		
 	}
+
 }

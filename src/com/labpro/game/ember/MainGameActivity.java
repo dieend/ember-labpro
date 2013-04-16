@@ -18,11 +18,9 @@ public class MainGameActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);		
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);		
-		//baru pertama kali dilaunch(sebelom nya belom dilaunch)
 		Log.d(TAG,"start game activity");
 		metrics = new DisplayMetrics();
-		getWindowManager().getDefaultDisplay().getMetrics(metrics);
-		//instansiasi gameView
+		getWindowManager().getDefaultDisplay().getMetrics(metrics); // dapetin ukuran layar
 		mainGameView = new MainGameView(this,metrics.widthPixels,metrics.heightPixels);
 		setContentView(mainGameView);	
 	}
@@ -30,7 +28,6 @@ public class MainGameActivity extends Activity {
 	@Override
 	protected void onPause() {
 		Log.d(TAG,"onPause()");
-		//ketika activity mati dan activity lain mengambil fokus
 		mainGameView.thread.setRunning(false); //matiin thread
 		super.onPause();			
 	}
