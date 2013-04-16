@@ -19,8 +19,9 @@ public class Sprite extends Drawable{
 		
 		Matrix matrix = new Matrix();
 		Paint paint = new Paint();
+		
 
-		setBounds(0, 0, 0, 0);
+		// setBounds(0, 0, 0, 0);
 		canvas.drawBitmap(image, matrix, paint);
 	}
 
