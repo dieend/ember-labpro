@@ -1,5 +1,7 @@
 package com.labpro.game.ember;
 
+import java.util.Random;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -11,10 +13,11 @@ public class DrawableManager{
 	 * construct pake aplication context
 	 * @param context
 	 */
+	private Resources res;
 	private DrawableManager(Context context) {
 		// TODO ganti gambar
-		Resources r = context.getResources();
-		emberBitmap = BitmapFactory.decodeResource(r, R.drawable.bucket);
+		res = context.getResources();
+		rand = new Random();
 	}
 	/**
 	 * must be called only once
@@ -33,11 +36,20 @@ public class DrawableManager{
 		return instance;
 	}
 	public Bitmap getEmberBitmap(){
-		assert emberBitmap != null;
+		if (emberBitmap == null) {
+			emberBitmap = BitmapFactory.decodeResource(res, R.drawable.bucket);
+		}
+
 		return emberBitmap;
 	}
-	
+	public Bitmap getWaterdropBitmap() {
+		if (waterDrop == null) {
+			waterDrop = BitmapFactory.decodeResource(res, R.drawable.waterdrop1);
+		}
+		return waterDrop;
+	}
 	private static DrawableManager instance;
 	private Bitmap emberBitmap;
-	
+	private Bitmap waterDrop;
+	public final Random rand; 	
 }
