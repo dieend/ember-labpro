@@ -1,7 +1,9 @@
 package com.labpro.game.ember;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 
 public class DrawableManager{
@@ -11,12 +13,14 @@ public class DrawableManager{
 	 */
 	public DrawableManager(Context context) {
 		// TODO ganti gambar
-		emberImage = context.getResources().getDrawable(R.drawable.ic_launcher);
+		Resources r = context.getResources();
+		emberBitmap = BitmapFactory.decodeResource(r, R.drawable.bucket);
+		
 	}
-	public Drawable getEmberImage(){
-		assert emberImage != null;
-		return emberImage;
+	public Bitmap getEmberBitmap(){
+		assert emberBitmap != null;
+		return emberBitmap;
 	}
-	private Drawable emberImage;
+	private Bitmap emberBitmap;
 	
 }
