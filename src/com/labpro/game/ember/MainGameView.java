@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -40,6 +41,9 @@ public class MainGameView extends SurfaceView implements SurfaceHolder.Callback 
 		background = BitmapFactory.decodeResource(getResources(),R.drawable.background);
 		score = 0;
 		delayCounter = delay;
+		paint.setTextSize(40);
+		paint.setTypeface(Typeface.MONOSPACE);
+		paint.setColor(Color.WHITE);
 	}
 	
 	@Override
@@ -89,7 +93,7 @@ public class MainGameView extends SurfaceView implements SurfaceHolder.Callback 
 		for (Waterdrop water:waters) if (water.isValid()) {
 			water.draw(canvas);
 		}
-		canvas.drawText("" + score, 10, 10, paint);
+		canvas.drawText("" + score, 30, 30, paint);
 	}
 	private void spawnWater() {
 		delayCounter += 1;
