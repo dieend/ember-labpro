@@ -12,8 +12,8 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		View v = findViewById(R.id.surfaceview);
-		v.draw(c);
+		View v = findViewById(R.id.custom_view);
+		
 	}
 
 	@Override
