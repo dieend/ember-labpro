@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -18,16 +19,27 @@ public class MainGameView extends SurfaceView implements SurfaceHolder.Callback 
 	private static final String TAG = MainGameView.class.getSimpleName();
 	public GameLoopThread thread;
 	private Matrix matrix = new Matrix();	
+	private Paint paint = new Paint();
 	private Bitmap background; // gambar latar belakang
-	private Bucket bucket;	
 	
-	public MainGameView(Object context, int screenWidth, int screenHeight) {
-		super((Context) context);
+	private Waterdrop[] waters;
+	private Bucket bucket;	
+	private int score;
+	private int delayCounter;
+	private final int delay = 100;
+	public MainGameView(Context context, int screenWidth, int screenHeight) {
+		super(context);
 		getHolder().addCallback(this);
 		setFocusable(true);
 		
-		bucket = new Bucket(this, screenWidth, screenHeight);		
+		bucket = new Bucket(this, screenWidth, screenHeight);
+		waters = new Waterdrop[20];
+		for (int i=0; i<waters.length; i++) {
+			waters[i] = new Waterdrop(this, screenWidth, screenHeight);
+		}
 		background = BitmapFactory.decodeResource(getResources(),R.drawable.background);
+		score = 0;
+		delayCounter = delay;
 	}
 	
 	@Override
@@ -73,10 +85,32 @@ public class MainGameView extends SurfaceView implements SurfaceHolder.Callback 
 	public void render(Canvas canvas) {				
 		canvas.setMatrix(matrix);
 		drawBackground(canvas);
-		bucket.draw(canvas);		
+		bucket.draw(canvas);
+		for (Waterdrop water:waters) if (water.isValid()) {
+			water.draw(canvas);
+		}
+		canvas.drawText("" + score, 10, 10, paint);
 	}
-
-	public void update() {		
+	private void spawnWater() {
+		delayCounter += 1;
+		if (delayCounter > delay) {
+			delayCounter = 0;
+			
+			for (Waterdrop water:waters) if (!water.isValid()) {
+				water.reset();
+				return;
+			}
+		}
+	}
+	public void update() {
+		spawnWater(); 
+		for (Waterdrop water:waters) if (water.isValid()) {
+			water.update();
+			if (bucket.getRectangle().intersect(water.getRectangle())) {
+				score += 10;
+				water.reset();
+			}
+		}
 	}
 	
 	public boolean onTouchEvent(MotionEvent event) {
@@ -84,15 +118,15 @@ public class MainGameView extends SurfaceView implements SurfaceHolder.Callback 
 		switch (actioncode) {
 			case MotionEvent.ACTION_DOWN:
 				Log.d(TAG, "down at " + event.getX() + " " + event.getY());
-				bucket.x = (int)event.getX();
+				bucket.updatePosition((int)event.getX());
 				break;
 			case MotionEvent.ACTION_MOVE:
 				Log.d(TAG, "move at " + event.getX() + " " + event.getY());
-				bucket.x = (int)event.getX();
+				bucket.updatePosition((int)event.getX());
 				break;
 			case MotionEvent.ACTION_UP:
 				Log.d(TAG, "up at " + event.getX() + " " + event.getY());
-				bucket.x = (int)event.getX();
+				bucket.updatePosition((int)event.getX());
 				break;		
 		}				
 		return true;
