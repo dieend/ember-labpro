@@ -3,6 +3,7 @@ package com.labpro.game.ember;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 public class MenuActivity extends Activity {
 
@@ -12,7 +13,7 @@ public class MenuActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.menu);
 	}
-	public void handleButton() {
+	public void handleButton(View v) {
 		Intent i = new Intent("android.intent.action.SESUATU");
 		this.startActivity(i);
 		this.finish();
