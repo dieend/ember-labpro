@@ -48,8 +48,15 @@ public class DrawableManager{
 		}
 		return waterDrop;
 	}
+	public Bitmap getBackgroundBitmap() {
+		if (background == null) {
+			background = BitmapFactory.decodeResource(res, R.drawable.background);
+		}
+		return background;
+	}
 	private static DrawableManager instance;
 	private Bitmap emberBitmap;
 	private Bitmap waterDrop;
+	private Bitmap background;
 	public final Random rand; 	
 }

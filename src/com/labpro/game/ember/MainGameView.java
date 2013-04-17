@@ -38,7 +38,7 @@ public class MainGameView extends SurfaceView implements SurfaceHolder.Callback 
 		for (int i=0; i<waters.length; i++) {
 			waters[i] = new Waterdrop(this, screenWidth, screenHeight);
 		}
-		background = BitmapFactory.decodeResource(getResources(),R.drawable.background);
+		background = DrawableManager.getInstance().getBackgroundBitmap();
 		score = 0;
 		delayCounter = delay;
 		paint.setTextSize(40);
